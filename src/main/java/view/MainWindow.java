@@ -5,6 +5,7 @@
  */
 package view;
 
+import controller.Controller;
 import controller.ExcelController;
 
 import javax.swing.*;
@@ -14,7 +15,6 @@ import java.util.List;
 
 public class MainWindow extends javax.swing.JFrame {
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chooseReadProperties;
     private javax.swing.JComboBox<String> columnsBox;
     private javax.swing.JTextArea contentListFromColumn;
@@ -38,13 +38,15 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> sheetsBox;
     private javax.swing.JTextPane subject;
     private javax.swing.JLabel subjectLabel;
-    // End of variables declaration//GEN-END:variables
 
-    private ExcelController controller;
+
+    private Controller controller;
     private DefaultComboBoxModel sheetsBoxModel;
     private DefaultComboBoxModel columnsBoxModel;
 
 
+    //TODO Объект контроллера должен приходить снаружи.
+    //TODO Вьюха только рисует и уведомляет о нажатии\выборе и прочей хуете
     public MainWindow() {
         initComponents();
 
@@ -61,8 +63,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+
     private void initComponents() {
 
         leftPanel = new javax.swing.JPanel();
@@ -92,9 +93,9 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         selectedFilename.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        selectedFilename.setText("���� �� ������");
+        selectedFilename.setText("Файл не выбран");
 
-        invokeFileChooser.setText("������� ����");
+        invokeFileChooser.setText("Выберите файл");
 
         contentListFromColumn.setColumns(20);
         contentListFromColumn.setRows(5);
@@ -128,7 +129,7 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addContainerGap())
         );
 
-        chooseReadProperties.setText("�������");
+        chooseReadProperties.setText("Выбрать");
 
         javax.swing.GroupLayout highRightPanelLayout = new javax.swing.GroupLayout(highRightPanel);
         highRightPanel.setLayout(highRightPanelLayout);
@@ -153,16 +154,16 @@ public class MainWindow extends javax.swing.JFrame {
         );
 
         mailLoginLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        mailLoginLabel.setText("����� �����");
+        mailLoginLabel.setText("Адрес почты отправителя");
 
         loginField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        passwordLabel.setText("������");
+        passwordLabel.setText("Пароль");
 
         passwordField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        sendButton.setText("���������");
+        sendButton.setText("Отправить");
 
         resultLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -214,10 +215,10 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1.setViewportView(subject);
 
         letterTextPanel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        letterTextPanel.setText("����� ������");
+        letterTextPanel.setText("Текст письма");
 
         subjectLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        subjectLabel.setText("���� ������");
+        subjectLabel.setText("Тема письма");
 
         letter.setColumns(20);
         letter.setRows(5);
@@ -281,7 +282,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
 
     public void start() {
@@ -297,15 +298,17 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void invokeFileChooserWindow() {
+        //Уходит инфа в контроллер из модели приходит приказ
         columnsBox.removeAllItems();
         sheetsBox.removeAllItems();
 
         JFileChooser fileOpen = new JFileChooser();
-        int ret = fileOpen.showDialog(null, "������� ����");
+        int ret = fileOpen.showDialog(null, "Выбрать");
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileOpen.getSelectedFile();
-            selectedFilename.setText(file.getName());
             controller.onSelectFile(file);
+            //Прийти с модели
+            selectedFilename.setText(file.getName());
             fillSheetsBox();
             resultLabel.setText("");
         }
@@ -350,6 +353,4 @@ public class MainWindow extends javax.swing.JFrame {
         controller.sendLetters(login, password, subjectText, letterText);
         passwordField.setText(null);
     }
-
-
 }

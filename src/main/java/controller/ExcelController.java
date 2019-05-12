@@ -20,6 +20,9 @@ public class ExcelController implements Controller {
     private List<String> columnContent;
     private Sender sender;
 
+    //TODO Контроллер не должен принимать mainwindow
+    //TODO Класс-модель должен быть проксирующим классом для других классов
+    //TODO Sender и ExcelApachePoi должны передаваться в качестве параметров в конструкторе
     public ExcelController(MainWindow window) {
         excel = new ExcelApachePoi();
         this.window = window;

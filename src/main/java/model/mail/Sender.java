@@ -9,9 +9,12 @@ import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Properties;
 
+//TODO Должен быть на интерфейсе
 public class Sender {
 
     private Properties mailProperties;
+    //TODO Sender не должен знать о контроллере, выбрасывать в методе исключение
+
     private Controller controller;
 
     public Sender (Controller controller) {

@@ -5,6 +5,7 @@ public class ErrorMessager {
 
     public static String getErrorMassage(Exception exception) {
 
+        //TODO Через if'ы и instanceof
         switch (exception.getClass().getSimpleName()) {
             case "FileNotFoundException": return "Файл не найден";
                 //break;
