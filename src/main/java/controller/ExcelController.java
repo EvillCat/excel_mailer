@@ -73,6 +73,6 @@ public class ExcelController implements Controller {
     }
 
     private void showSuccessText() {
-        window.setResultLabelTextColorGreen("Рассылка успешно отправлена");
+        window.setResultLabelTextColorGreen("РЎРѕРѕР±С‰РµРЅРёРµ РѕС‚РїСЂР°РІР»РµРЅРѕ СѓСЃРїРµС€РЅРѕ");
     }
 }

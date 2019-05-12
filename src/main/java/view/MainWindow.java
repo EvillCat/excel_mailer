@@ -92,9 +92,9 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         selectedFilename.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        selectedFilename.setText("Файл не выбран");
+        selectedFilename.setText("пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
-        invokeFileChooser.setText("Выбрать файл");
+        invokeFileChooser.setText("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 
         contentListFromColumn.setColumns(20);
         contentListFromColumn.setRows(5);
@@ -128,7 +128,7 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addContainerGap())
         );
 
-        chooseReadProperties.setText("Выбрать");
+        chooseReadProperties.setText("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
         javax.swing.GroupLayout highRightPanelLayout = new javax.swing.GroupLayout(highRightPanel);
         highRightPanel.setLayout(highRightPanelLayout);
@@ -153,16 +153,16 @@ public class MainWindow extends javax.swing.JFrame {
         );
 
         mailLoginLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        mailLoginLabel.setText("Логин почты");
+        mailLoginLabel.setText("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
         loginField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        passwordLabel.setText("Пароль");
+        passwordLabel.setText("пїЅпїЅпїЅпїЅпїЅпїЅ");
 
         passwordField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        sendButton.setText("Отправить");
+        sendButton.setText("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
         resultLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -214,10 +214,10 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1.setViewportView(subject);
 
         letterTextPanel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        letterTextPanel.setText("Текст письма");
+        letterTextPanel.setText("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
         subjectLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        subjectLabel.setText("Тема письма");
+        subjectLabel.setText("пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
         letter.setColumns(20);
         letter.setRows(5);
@@ -301,7 +301,7 @@ public class MainWindow extends javax.swing.JFrame {
         sheetsBox.removeAllItems();
 
         JFileChooser fileOpen = new JFileChooser();
-        int ret = fileOpen.showDialog(null, "Выбрать файл");
+        int ret = fileOpen.showDialog(null, "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileOpen.getSelectedFile();
             selectedFilename.setText(file.getName());
