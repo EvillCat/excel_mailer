@@ -6,13 +6,13 @@ public class ErrorMessager {
     public static String getErrorMassage(Exception exception) {
 
         switch (exception.getClass().getSimpleName()) {
-            case "FileNotFoundException": return "Файл не найден";
+            case "FileNotFoundException": return "Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ";
                 //break;
-            case "IncorrectEmailAddressException": return "Адрес почты отправителя указан неверно \n" +
-                    "Возможна отправка только с @gmail.com или @mail.ru";
-            case "NotEnoughElementsOnForm": return "Указано недостаточно данных";
-            case "MessagingException": return "Ошибка отправки почты";
-            default: return "Неизвестная ошибка";
+            case "IncorrectEmailAddressException": return "РђРґСЂРµСЃ РїРѕС‡С‚С‹ РѕС‚РїСЂР°РІРёС‚РµР»СЏ СѓРєР°Р·Р°РЅ РЅРµРІРµСЂРЅРѕ \n" +
+                    "Р’РѕР·РјРѕР¶РЅР° РѕС‚РїСЂР°РІРєР° С‚РѕР»СЊРєРѕ СЃ @gmail.com РёР»Рё @mail.ru";
+            case "NotEnoughElementsOnForm": return "РЈРєР°Р·Р°РЅРѕ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґР°РЅРЅС‹С…";
+            case "MessagingException": return "РћС€РёР±РєР° РѕС‚РїСЂР°РІРєРё РїРѕС‡С‚С‹";
+            default: return "РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕС€РёР±РєР°";
 
         }
 
