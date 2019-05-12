@@ -56,18 +56,23 @@ public class ExcelController implements Controller {
         return columnContent;
     }
 
-    //TODO Сделать проверку на то, чтобы данные не были пустыми
     @Override
     public void sendLetters(String login, String password, String subject, String letterText) {
         try {
             sender.send(login, password, subject, letterText, columnContent);
+            showSuccessText();
         } catch (ErrorMessager.IncorrectEmailAddressException e) {
             throwError(e);
         }
+
     }
 
     @Override
     public void throwError(Exception exception) {
-        window.setResultLabelText(ErrorMessager.getErrorMassage(exception));
+        window.setResultLabelTextColorRed(ErrorMessager.getErrorMassage(exception));
+    }
+
+    private void showSuccessText() {
+        window.setResultLabelTextColorGreen("Рассылка успешно отправлена");
     }
 }

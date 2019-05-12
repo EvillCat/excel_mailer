@@ -16,6 +16,4 @@ public interface Controller {
     void sendLetters(String login, String password, String subject, String letterText);
 
     void throwError(Exception exception);
-
-
 }

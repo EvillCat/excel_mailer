@@ -288,11 +288,18 @@ public class MainWindow extends javax.swing.JFrame {
         EventQueue.invokeLater(() -> new MainWindow().setVisible(true));
     }
 
-    public void setResultLabelText(String text) {
+    public void setResultLabelTextColorRed(String text) {
         resultLabel.setText("<html><font color='red'>" + text + "</font></html>");
     }
 
+    public void setResultLabelTextColorGreen(String text) {
+        resultLabel.setText("<html><font color = 'green'>" + text + "</font></html>");
+    }
+
     private void invokeFileChooserWindow() {
+        columnsBox.removeAllItems();
+        sheetsBox.removeAllItems();
+
         JFileChooser fileOpen = new JFileChooser();
         int ret = fileOpen.showDialog(null, "Выбрать файл");
         if (ret == JFileChooser.APPROVE_OPTION) {
