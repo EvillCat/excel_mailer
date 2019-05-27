@@ -1,19 +1,22 @@
 package controller;
 
+import model.Model;
+
 import java.io.File;
 import java.util.List;
 
 public interface Controller {
 
+    void initModel (Model model);
+
     void onSelectFile(File file);
 
-    List<String> getListOfSheets();
+    void onGetListOfSheets();
 
-    List<String> getListOfColumns(String sheetName);
+    void onGetListOfColumns(String sheetName);
 
-    List<String> selectProperties(String sheetName, String columnName);
+    void onSelectProperties(String sheetName, String columnName);
 
-    void sendLetters(String login, String password, String subject, String letterText);
+    void onSend(String login, String password, String subject, String letterText);
 
-    void throwError(Exception exception);
 }

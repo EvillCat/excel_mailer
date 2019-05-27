@@ -6,14 +6,14 @@
 package view;
 
 import controller.Controller;
-import controller.ExcelController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame implements SwingView {
 
     private javax.swing.JButton chooseReadProperties;
     private javax.swing.JComboBox<String> columnsBox;
@@ -44,23 +44,16 @@ public class MainWindow extends javax.swing.JFrame {
     private DefaultComboBoxModel sheetsBoxModel;
     private DefaultComboBoxModel columnsBoxModel;
 
-
-    //TODO Объект контроллера должен приходить снаружи.
-    //TODO Вьюха только рисует и уведомляет о нажатии\выборе и прочей хуете
-    public MainWindow() {
+    //TODO Вьюха только рисует и уведомляет о действиях пользователя
+    public MainWindow(Controller controller) {
+        this.controller = controller;
         initComponents();
 
-
-        controller = new ExcelController(this);
-        sheetsBoxModel = new DefaultComboBoxModel();
-        columnsBoxModel = new DefaultComboBoxModel();
-
-
-        invokeFileChooser.addActionListener(e -> invokeFileChooserWindow());
-        sheetsBox.addActionListener(e -> onSelectSheet());
-        chooseReadProperties.addActionListener(e -> onSelectColumn());
-        sendButton.addActionListener(e -> onSendButton());
-
+        invokeFileChooser.addActionListener(e -> chooseDataSource());
+        sheetsBox.addActionListener(e -> selectSheet());
+        chooseReadProperties.addActionListener(e -> controller.onSelectProperties(
+                (String) sheetsBox.getSelectedItem(), (String) columnsBox.getSelectedItem()));
+        sendButton.addActionListener(e -> send());
     }
 
 
@@ -90,12 +83,16 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         letter = new javax.swing.JTextArea();
 
+        columnsBoxModel = new DefaultComboBoxModel();
+        sheetsBoxModel = new DefaultComboBoxModel();
+
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         selectedFilename.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        selectedFilename.setText("Файл не выбран");
+        selectedFilename.setText("File not chosed");
 
-        invokeFileChooser.setText("Выберите файл");
+        invokeFileChooser.setText("Choose file");
 
         contentListFromColumn.setColumns(20);
         contentListFromColumn.setRows(5);
@@ -129,7 +126,7 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addContainerGap())
         );
 
-        chooseReadProperties.setText("Выбрать");
+        chooseReadProperties.setText("Choose properties");
 
         javax.swing.GroupLayout highRightPanelLayout = new javax.swing.GroupLayout(highRightPanel);
         highRightPanel.setLayout(highRightPanelLayout);
@@ -154,16 +151,16 @@ public class MainWindow extends javax.swing.JFrame {
         );
 
         mailLoginLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        mailLoginLabel.setText("Адрес почты отправителя");
+        mailLoginLabel.setText("MailSender e-mail");
 
         loginField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        passwordLabel.setText("Пароль");
+        passwordLabel.setText("Password");
 
         passwordField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        sendButton.setText("Отправить");
+        sendButton.setText("Send");
 
         resultLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -215,10 +212,10 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1.setViewportView(subject);
 
         letterTextPanel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        letterTextPanel.setText("Текст письма");
+        letterTextPanel.setText("Letter");
 
         subjectLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        subjectLabel.setText("Тема письма");
+        subjectLabel.setText("Subject");
 
         letter.setColumns(20);
         letter.setRows(5);
@@ -280,24 +277,25 @@ public class MainWindow extends javax.swing.JFrame {
                                                 .addComponent(letterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
-
         pack();
     }
 
-
     public void start() {
-        EventQueue.invokeLater(() -> new MainWindow().setVisible(true));
+        EventQueue.invokeLater(() -> new MainWindow(controller).setVisible(true));
     }
 
-    public void setResultLabelTextColorRed(String text) {
+    @Override
+    public void showErrorMessage(String text) {
         resultLabel.setText("<html><font color='red'>" + text + "</font></html>");
     }
 
-    public void setResultLabelTextColorGreen(String text) {
+    @Override
+    public void showResultMessage(String text) {
         resultLabel.setText("<html><font color = 'green'>" + text + "</font></html>");
     }
 
-    private void invokeFileChooserWindow() {
+    //TODO Убрать логику
+    private void chooseDataSource() {
         //Уходит инфа в контроллер из модели приходит приказ
         columnsBox.removeAllItems();
         sheetsBox.removeAllItems();
@@ -306,51 +304,45 @@ public class MainWindow extends javax.swing.JFrame {
         int ret = fileOpen.showDialog(null, "Выбрать");
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileOpen.getSelectedFile();
-            controller.onSelectFile(file);
             //Прийти с модели
             selectedFilename.setText(file.getName());
-            fillSheetsBox();
+            controller.onSelectFile(file);
+            controller.onGetListOfSheets();
             resultLabel.setText("");
         }
     }
 
-    private void fillSheetsBox() {
-        sheetsBoxModel.addAll(controller.getListOfSheets());
+    @Override
+    public void fillSheetsBox(List<String> sheets) {
+        sheetsBoxModel.addAll(sheets);
         sheetsBox.setModel(sheetsBoxModel);
+        sheetsBox.setSelectedItem(sheets.get(1));
+
     }
 
-    private void onSelectSheet() {
+
+    private void selectSheet() {
         String sheetName = (String) sheetsBox.getSelectedItem();
-        columnsBoxModel.addAll(controller.getListOfColumns(sheetName));
+        controller.onGetListOfColumns(sheetName);
+    }
+
+
+    public void showColumnsOfSheet(List<String> columns) {
+        columnsBoxModel.addAll(columns);
         columnsBox.setModel(columnsBoxModel);
     }
 
-    private void onSelectColumn() {
+    public void showSelectedContent(List<String> columnContent) {
         contentListFromColumn.selectAll();
         contentListFromColumn.replaceSelection(null);
-        List<String> columnContent = controller.selectProperties(
-                (String) sheetsBox.getSelectedItem(), (String) columnsBox.getSelectedItem());
-
         for (String value : columnContent) {
             contentListFromColumn.append(value + "\n");
-
         }
     }
 
-    private void onSendButton() {
-        String login = null;
-        String password = null;
-        String subjectText = null;
-        String letterText = null;
-        try {
-            login = loginField.getText();
-            password = new String(passwordField.getPassword());
-            subjectText = subject.getText();
-            letterText = letter.getText();
-        } catch (NullPointerException | IllegalArgumentException e) {
-            controller.throwError(e);
-        }
-        controller.sendLetters(login, password, subjectText, letterText);
-        passwordField.setText(null);
+    private void send() {
+        controller.onSend(loginField.getText(), new String(passwordField.getPassword()),
+                subject.getText(), letter.getText());
+        //TODO В контроллере - проверку на null
     }
 }

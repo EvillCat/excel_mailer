@@ -18,6 +18,7 @@ public class ExcelApachePoi implements ExcelRepository {
     private Workbook workbook;
 
     //FileNotFoundException!
+    @Override
     public void connectToExcelTable(File file) throws IOException {
         String extension = FilenameUtils.getExtension(file.getAbsolutePath());
 
@@ -56,7 +57,13 @@ public class ExcelApachePoi implements ExcelRepository {
         List<String> values = new LinkedList<>();
         for (Row row : sheet) {
             Cell resultCell = row.getCell(columnIndex);
-            values.add(resultCell.getStringCellValue());
+            try{
+                String value = resultCell.getStringCellValue();
+                values.add(value);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                return values;
+            }
         }
         return values;
     }
